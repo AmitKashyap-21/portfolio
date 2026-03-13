@@ -1,36 +1,91 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Amit Kashyap — Portfolio
 
-## Getting Started
+This repository contains the source code for my personal portfolio website.
 
-First, run the development server:
+I built this portfolio to showcase the projects, experiments, and technical notes from my journey learning **data science, machine learning, and AI engineering**. The goal of the site is to document the systems I'm building, the tools I'm exploring, and the ideas I'm experimenting with while working on real-world machine learning problems.
 
-```bash
+Rather than just listing projects, the portfolio focuses on presenting practical work — from model experimentation and explainability to building small AI systems and APIs.
+
+---
+
+## Live Website
+
+You can view the deployed portfolio here:
+
+https://portfolio-amit-kashyap.vercel.app/
+
+---
+
+## What You'll Find in This Portfolio
+
+The website includes several sections that reflect the kind of work I'm currently focused on:
+
+**Projects**
+Selected machine learning and AI projects, including experiments with RAG pipelines, ML systems, and model deployment.
+
+**Experiments**
+Small prototypes and interactive demos used to explore different AI ideas and workflows.
+
+**Technical Skills**
+Tools and technologies I frequently use when working on machine learning systems and data-driven applications.
+
+**Blog & Research Notes**
+Short technical notes and articles documenting things I'm learning — such as RAG pipelines, model explainability, and building AI APIs.
+
+**Contact**
+Ways to connect if you'd like to collaborate, discuss ideas, or explore opportunities.
+
+---
+
+## Tech Stack
+
+The portfolio is built using modern web technologies:
+
+* **Next.js**
+* **React**
+* **TypeScript**
+* **Tailwind CSS**
+* **Framer Motion**
+
+The focus was to keep the design clean and minimal while adding subtle animations and interactions where they improve the experience.
+
+---
+
+## Running the Project Locally
+
+If you'd like to run the project locally:
+
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+http://localhost:3000
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## About Me
 
-To learn more about Next.js, take a look at the following resources:
+I'm currently focused on learning and building around:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+* Machine Learning
+* Data Science
+* Retrieval Augmented Generation (RAG)
+* Model Explainability
+* AI System Design
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+I enjoy turning ideas, datasets, and models into working systems that solve practical problems.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Connect
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+If you'd like to connect or discuss ideas related to AI, machine learning, or data science:
+
+- **Portfolio:** https://portfolio-amit-kashyap.vercel.app/  
+- **GitHub:** https://github.com/AmitKashyap-21  
+- **LinkedIn:** https://www.linkedin.com/in/amit-kashyap-b39b371a5/
+---
+
+Thanks for checking out the project.
