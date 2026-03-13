@@ -1,0 +1,104 @@
+---
+title: "Building Production AI APIs with FastAPI"
+summary: "Guide to deploying machine learning models with FastAPI including inference endpoints, validation, and performance considerations."
+date: "2026-01-10"
+category: "AI Engineering"
+tags: ["FastAPI", "MLOps", "API Design", "Python"]
+---
+
+# Building Production AI APIs with FastAPI
+
+FastAPI has become the go-to framework for serving ML models in production. Its async support, automatic validation, and OpenAPI documentation make it ideal for AI applications.
+
+## Why FastAPI for ML Serving?
+
+- **Async/await** for handling concurrent inference requests
+- **Pydantic** models for input validation
+- **Auto-generated docs** for team collaboration
+- **Performance** comparable to Go and Node.js
+
+## Basic Model Serving
+
+```python
+from fastapi import FastAPI
+from pydantic import BaseModel
+import joblib
+
+app = FastAPI(title="ML Prediction API")
+
+# Load model at startup
+model = joblib.load("model.pkl")
+
+class PredictionRequest(BaseModel):
+    features: list[float]
+
+class PredictionResponse(BaseModel):
+    prediction: float
+    confidence: float
+
+@app.post("/predict", response_model=PredictionResponse)
+async def predict(request: PredictionRequest):
+    prediction = model.predict([request.features])[0]
+    confidence = float(model.predict_proba([request.features]).max())
+    return PredictionResponse(
+        prediction=float(prediction),
+        confidence=confidence
+    )
+```
+
+## Production Patterns
+
+### Health Checks
+
+```python
+@app.get("/health")
+async def health():
+    return {
+        "status": "healthy",
+        "model_version": "1.2.3",
+        "uptime": get_uptime()
+    }
+```
+
+### Caching with Redis
+
+```python
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.redis import RedisBackend
+from fastapi_cache.decorator import cache
+
+@app.post("/predict")
+@cache(expire=300)  # Cache for 5 minutes
+async def predict(request: PredictionRequest):
+    return model.predict(request.features)
+```
+
+### Model Versioning with MLflow
+
+```python
+import mlflow
+
+@app.on_event("startup")
+async def load_model():
+    global model
+    model = mlflow.pyfunc.load_model(
+        "models:/production-model/latest"
+    )
+```
+
+## Deployment
+
+Containerize with Docker for consistent deployments:
+
+```dockerfile
+FROM python:3.11-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+```
+
+## Conclusion
+
+FastAPI provides the performance, validation, and developer experience needed for production ML serving. Combined with Docker, Redis, and MLflow, you get a robust, scalable AI API infrastructure.

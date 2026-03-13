@@ -1,0 +1,78 @@
+---
+title: "Understanding RAG Pipelines: From Theory to Production"
+summary: "Explanation of document chunking, embeddings, vector databases, and deployment considerations in RAG systems."
+date: "2026-02-15"
+category: "ML Systems"
+tags: ["RAG", "LLM", "LangChain", "Vector DB"]
+---
+
+# Understanding RAG Pipelines: From Theory to Production
+
+Retrieval-Augmented Generation (RAG) has become one of the most impactful patterns in production AI systems. By combining the knowledge retrieval capabilities of vector databases with the generative power of LLMs, RAG systems can provide accurate, contextual answers grounded in your specific data.
+
+## Why RAG Matters
+
+Traditional LLMs have a knowledge cutoff date and can hallucinate facts. RAG solves both problems by:
+
+1. **Grounding responses** in actual documents from your knowledge base
+2. **Keeping information current** without retraining the model
+3. **Providing citations** so users can verify answers
+
+## Core Architecture
+
+A production RAG pipeline consists of several key components:
+
+```python
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.embeddings import OpenAIEmbeddings
+from langchain.vectorstores import FAISS
+
+# Document Processing Pipeline
+splitter = RecursiveCharacterTextSplitter(
+    chunk_size=512,
+    chunk_overlap=50,
+    separators=["\n\n", "\n", ". ", " "]
+)
+
+chunks = splitter.split_documents(documents)
+embeddings = OpenAIEmbeddings(model="text-embedding-ada-002")
+vector_store = FAISS.from_documents(chunks, embeddings)
+```
+
+## Chunking Strategies
+
+The way you split documents significantly impacts retrieval quality:
+
+- **Fixed-size chunks**: Simple but can break semantic units
+- **Recursive splitting**: Respects document structure (paragraphs, sentences)
+- **Semantic chunking**: Groups by meaning using embedding similarity
+
+## Hybrid Search
+
+Combining dense (vector) and sparse (BM25) retrieval typically outperforms either alone:
+
+```python
+from langchain.retrievers import EnsembleRetriever, BM25Retriever
+
+bm25 = BM25Retriever.from_documents(chunks, k=5)
+dense = vector_store.as_retriever(search_kwargs={"k": 5})
+
+hybrid = EnsembleRetriever(
+    retrievers=[bm25, dense],
+    weights=[0.4, 0.6]
+)
+```
+
+## Production Considerations
+
+When deploying RAG to production, consider:
+
+- **Caching**: Cache frequent queries and embeddings
+- **Monitoring**: Track retrieval relevance scores
+- **Chunking quality**: Invest time in chunking strategy
+- **Reranking**: Add a cross-encoder reranker for better precision
+- **Evaluation**: Use frameworks like RAGAS for systematic evaluation
+
+## Conclusion
+
+RAG is a powerful pattern that bridges the gap between general-purpose LLMs and domain-specific knowledge. By carefully designing your chunking, retrieval, and generation layers, you can build AI systems that provide accurate, grounded answers at scale.

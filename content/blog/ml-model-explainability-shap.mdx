@@ -1,0 +1,77 @@
+---
+title: "ML Model Explainability Using SHAP"
+summary: "How SHAP values help interpret model predictions and identify feature importance."
+date: "2026-01-28"
+category: "Machine Learning"
+tags: ["SHAP", "XAI", "Scikit-learn", "Model Interpretability"]
+---
+
+# ML Model Explainability Using SHAP
+
+As machine learning models are deployed in high-stakes domains like healthcare, finance, and autonomous systems, the need for explainability becomes critical. SHAP (SHapley Additive exPlanations) provides a unified approach to understanding model predictions.
+
+## The Problem with Black Boxes
+
+Complex models like gradient boosted trees and neural networks can achieve high accuracy, but stakeholders need to understand *why* a model makes specific predictions:
+
+- **Regulatory compliance** (GDPR right to explanation)
+- **Debugging biases** in training data
+- **Building trust** with end users
+
+## SHAP Values Explained
+
+SHAP values come from game theory — they measure each feature's contribution to moving a prediction from the average to its actual value:
+
+```python
+import shap
+import xgboost as xgb
+
+# Train model
+model = xgb.XGBClassifier()
+model.fit(X_train, y_train)
+
+# Compute SHAP values
+explainer = shap.TreeExplainer(model)
+shap_values = explainer.shap_values(X_test)
+
+# Global feature importance
+shap.summary_plot(shap_values, X_test)
+```
+
+## Types of SHAP Explanations
+
+### Global Explanations
+Understand which features matter most across all predictions:
+
+```python
+# Bar plot of mean absolute SHAP values
+shap.plots.bar(shap_values)
+```
+
+### Local Explanations
+Understand individual predictions — why did the model predict *this* for *this* input:
+
+```python
+# Waterfall plot for a single prediction
+shap.plots.waterfall(shap_values[0])
+```
+
+### Interaction Effects
+SHAP can reveal feature interactions:
+
+```python
+shap.dependence_plot("feature_name", shap_values, X_test)
+```
+
+## Production Integration
+
+To integrate SHAP into production ML pipelines:
+
+1. **Pre-compute** SHAP values during model training
+2. **Store** feature importances in your model registry (MLflow)
+3. **Serve** explanations alongside predictions via API
+4. **Monitor** for SHAP value drift as an early warning signal
+
+## Conclusion
+
+SHAP transforms black-box models into transparent, trustworthy systems. By integrating explainability into your ML pipeline, you build models that stakeholders can understand, debug, and trust.
